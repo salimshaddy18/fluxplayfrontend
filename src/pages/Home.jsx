@@ -131,10 +131,11 @@ const Dashboard = () => {
                 uploads.map((video, index) => (
                   <VideoCard
                     key={index}
-                    videoId={video._id} // <- pass video ID
+                    videoId={video._id}
                     title={video.title}
                     thumbnailUrl={video.thumbnail}
                     views={video.views}
+                    likes={video.likes}
                   />
                 ))
               ) : (
