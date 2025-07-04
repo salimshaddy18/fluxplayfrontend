@@ -49,7 +49,10 @@ const Sidebar = () => {
           </Link>
 
           {/* Liked Videos */}
-          <Link className="flex items-center gap-3 px-3 py-2 rounded bg-[#20364b] hover:bg-[#2a4a64] transition-colors">
+          <Link
+            to="/liked-videos"
+            className="flex items-center gap-3 px-3 py-2 rounded bg-[#20364b] hover:bg-[#2a4a64] transition-colors"
+          >
             <div className="text-white">❤️</div>
             <p className="text-white text-sm font-medium leading-normal">
               Liked videos

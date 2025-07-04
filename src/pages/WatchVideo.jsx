@@ -46,6 +46,7 @@ const WatchVideo = () => {
     fetchVideo();
   }, [videoId, details]);
 
+  //increment views
   useEffect(() => {
     if (!videoId) return;
 
@@ -126,7 +127,7 @@ const WatchVideo = () => {
           />
         </div>
 
-        {/* Title and Like Button (button slightly lower) */}
+        {/* Title and Like Button */}
         <div className="flex justify-between mb-2">
           <h1 className="text-xl font-bold">{video.title}</h1>
           <div className="mt-2">
@@ -142,7 +143,9 @@ const WatchVideo = () => {
         </div>
 
         {/* Video Description */}
-        <p className="text-sm text-gray-400 mb-4">{video.description}</p>
+        <p className="text-sm text-gray-400 mb-4">
+          {video.views?.toLocaleString() || 0} views • {video.likes || 0} likes
+        </p>
 
         {/* Uploader Info */}
         {video.owner && (

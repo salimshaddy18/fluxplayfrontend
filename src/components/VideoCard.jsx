@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const VideoCard = ({ videoId, title, thumbnailUrl, views, likes }) => {
+const VideoCard = ({ videoId, title, thumbnailUrl, views, likes, small = false }) => {
   return (
-    <Link to={`/watch/${videoId}`} className="w-full">
-      <div className="flex flex-col gap-2 cursor-pointer w-full">
+    <Link to={`/watch/${videoId}`} className={`w-full ${small ? "max-w-xs" : ""}`}>
+      <div className={`flex flex-col gap-1 cursor-pointer w-full ${small ? "text-sm" : ""}`}>
         {/* Thumbnail */}
-        <div className="w-full aspect-video overflow-hidden rounded-lg bg-[#1b2e3f]">
+        <div className={`w-full overflow-hidden rounded-lg bg-[#1b2e3f] ${small ? "h-32" : "aspect-video"}`}>
           <img
             src={thumbnailUrl}
             alt={title}
@@ -15,10 +15,12 @@ const VideoCard = ({ videoId, title, thumbnailUrl, views, likes }) => {
         </div>
 
         {/* Title */}
-        <p className="text-white text-sm font-semibold truncate">{title}</p>
+        <p className={`text-white font-semibold truncate ${small ? "text-xs" : "text-sm"}`}>
+          {title}
+        </p>
 
-        {/* Views */}
-        <p className="flex gap-20 text-[#8daece] text-xs font-normal">
+        {/* Views and Likes */}
+        <p className="flex justify-between text-[#8daece] text-xs">
           <span>{views?.toLocaleString() || 0} views</span>
           <span>{likes || 0} likes</span>
         </p>
