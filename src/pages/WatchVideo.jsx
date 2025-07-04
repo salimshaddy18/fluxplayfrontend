@@ -108,6 +108,34 @@ const WatchVideo = () => {
     }
   };
 
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this video?"
+    );
+    if (!confirmDelete) return;
+
+    try {
+      const res = await fetch(
+        `http://localhost:8000/api/v1/videos/delete-video/${videoId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+
+      const data = await res.json();
+      if (res.ok) {
+        alert("Video deleted successfully");
+        window.location.href = "/"; // or use navigate("/") if using useNavigate()
+      } else {
+        alert(data.message || "Failed to delete video");
+      }
+    } catch (error) {
+      console.error("Error deleting video:", error.message);
+      alert("An error occurred while deleting the video");
+    }
+  };
+
   if (!video) {
     return <p className="text-white p-6">Loading video...</p>;
   }
@@ -139,12 +167,34 @@ const WatchVideo = () => {
             >
               {liked ? "👍 Liked" : "👍 Like"}
             </button>
+
+            {isOwnVideo && (
+              <button
+                onClick={handleDelete}
+                className="px-4 py-1.5 bg-red-600 hover:bg-red-700 text-sm rounded font-medium transition-colors ml-2"
+              >
+                🗑️ Delete
+              </button>
+            )}
+
+            {isOwnVideo && (
+              <Link
+                to={`/edit-video/${video._id}`}
+                className="px-4 py-1.5 bg-yellow-500 hover:bg-yellow-600 text-sm rounded font-medium transition-colors ml-2"
+              >
+                ✏️ Edit
+              </Link>
+            )}
           </div>
         </div>
 
-        {/* Video Description */}
         <p className="text-sm text-gray-400 mb-4">
           {video.views?.toLocaleString() || 0} views • {video.likes || 0} likes
+        </p>
+        
+        {/* Video Description */}
+        <p className="text-base text-white mb-6">
+          {video.description || "No description provided."}
         </p>
 
         {/* Uploader Info */}

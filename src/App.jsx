@@ -15,6 +15,7 @@ import UploadVideoPage from "./pages/Upload.jsx";
 import WatchVideo from "./pages/WatchVideo";
 import YourVideosPage from "./pages/YourVideos.jsx"
 import LikedVideos from "./pages/LikedVideo.jsx"
+import EditVideo from "./pages/EditVideo.jsx"
 
 
 function App() {
@@ -65,6 +66,7 @@ function App() {
         <Route path="/watch/:videoId" element={<WatchVideo />} />
         <Route path="/your-videos" element={<YourVideosPage />} />
         <Route path="/liked-videos" element={<LikedVideos />} />
+        <Route path="/edit-video/:videoId" element={<EditVideo />} />
         
       </Routes>
     </div>
