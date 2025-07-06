@@ -9,6 +9,10 @@ const WatchVideo = () => {
   const [liked, setLiked] = useState(false);
   const { details } = useUserContext(); // current user info
 
+  const [commentText, setCommentText] = useState("");
+  const [comments, setComments] = useState([]);
+  const [refresh, setRefresh] = useState(false); // triggers comment refetch
+
   useEffect(() => {
     const fetchVideo = async () => {
       try {
@@ -81,6 +85,75 @@ const WatchVideo = () => {
       }
     } catch (err) {
       console.error("Subscription error:", err.message);
+    }
+  };
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:8000/api/v1/comments/${videoId}`,
+          { credentials: "include" }
+        );
+        const data = await res.json();
+        if (res.ok) {
+          setComments(data.data.comments);
+        }
+      } catch (err) {
+        console.error("Failed to fetch comments:", err.message);
+      }
+    };
+
+    fetchComments();
+  }, [videoId, refresh]);
+
+  const handlePostComment = async () => {
+    if (!commentText.trim()) return;
+
+    try {
+      const res = await fetch(
+        `http://localhost:8000/api/v1/comments/${videoId}`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ content: commentText }),
+        }
+      );
+
+      if (res.ok) {
+        setCommentText(""); // clear input
+        setRefresh((prev) => !prev); // trigger refresh
+      }
+    } catch (err) {
+      console.error("Error posting comment:", err.message);
+    }
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    const confirm = window.confirm(
+      "Are you sure you want to delete this comment?"
+    );
+    if (!confirm) return;
+
+    try {
+      const res = await fetch(
+        `http://localhost:8000/api/v1/comments/c/${commentId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+
+      const data = await res.json();
+      if (res.ok) {
+        alert("Comment deleted");
+        setRefresh((prev) => !prev); // refresh comments
+      } else {
+        alert(data.message || "Failed to delete comment");
+      }
+    } catch (err) {
+      console.error("Error deleting comment:", err.message);
     }
   };
 
@@ -191,7 +264,7 @@ const WatchVideo = () => {
         <p className="text-sm text-gray-400 mb-4">
           {video.views?.toLocaleString() || 0} views • {video.likes || 0} likes
         </p>
-        
+
         {/* Video Description */}
         <p className="text-base text-white mb-6">
           {video.description || "No description provided."}
@@ -228,6 +301,60 @@ const WatchVideo = () => {
             )}
           </div>
         )}
+
+        {/* comment section */}
+        <div className="mt-8">
+          <h2 className="text-lg font-bold mb-3">Comments</h2>
+          <div className="flex gap-2 mb-4">
+            <input
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
+              placeholder="Write a comment..."
+              className="flex-1 px-3 py-2 bg-[#1b2e3f] text-white border border-gray-700 rounded"
+            />
+            <button
+              onClick={handlePostComment}
+              className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-sm font-medium"
+            >
+              Post
+            </button>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          {comments.map((c) => (
+            <div
+              key={c._id}
+              className="bg-[#1b2e3f] p-3 rounded-lg flex flex-col gap-1"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <img
+                    src={c.user.avatar}
+                    alt={c.user.username}
+                    className="w-8 h-8 rounded-full"
+                  />
+                  <p className="text-white font-semibold">@{c.user.username}</p>
+                </div>
+
+                {/* Only show delete button if current user is the comment author */}
+                {details?._id === c.user._id && (
+                  <button
+                    onClick={() => handleDeleteComment(c._id)}
+                    className="text-red-500 text-sm hover:underline"
+                  >
+                    Delete
+                  </button>
+                )}
+              </div>
+
+              <p className="text-gray-300">{c.comment}</p>
+              <p className="text-xs text-gray-500">
+                {new Date(c.createdAt).toLocaleString()}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
