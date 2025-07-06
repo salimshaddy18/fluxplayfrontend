@@ -8,22 +8,22 @@ import RegisterPage from "./pages/auth/Register.auth.jsx";
 import Dashboard from "./pages/Home.jsx";
 import ProfilePage from "./pages/ProfilePage";
 import SettingsPage from "./pages/Settings";
-import PlaylistPage from "./pages/Playlist.jsx"
-import SubscriptionsPage from "./pages/Subscription.jsx"
-import WatchHistory from "./pages/History.jsx"
+import PlaylistPage from "./pages/Playlist.jsx";
+import SubscriptionsPage from "./pages/Subscription.jsx";
+import WatchHistory from "./pages/History.jsx";
 import UploadVideoPage from "./pages/Upload.jsx";
 import WatchVideo from "./pages/WatchVideo";
-import YourVideosPage from "./pages/YourVideos.jsx"
-import LikedVideos from "./pages/LikedVideo.jsx"
-import EditVideo from "./pages/EditVideo.jsx"
-
+import YourVideosPage from "./pages/YourVideos.jsx";
+import LikedVideos from "./pages/LikedVideo.jsx";
+import EditVideo from "./pages/EditVideo.jsx";
+import PlaylistDetails from "./pages/PlaylistDetails";
 
 function App() {
   const context = useUserContext();
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     isAvaliable();
-    setLoading(false)
+    setLoading(false);
   }, []);
   const isAvaliable = async () => {
     try {
@@ -44,19 +44,32 @@ function App() {
     }
   };
   console.log(context.isUserLoggedIn);
-  if(loading){
-    return(
-    <div className="flex items-center justify-center h-screen w-full text-3xl">
-      Loading ...
-    </div>
-    )
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen w-full text-3xl">
+        Loading ...
+      </div>
+    );
   }
   return (
     <div>
       <Routes>
-        <Route path="/" element={(context.isUserLoggedIn) ? <Dashboard/> : <Navigate to='/login' />} />
-        <Route path="/login" element={(context.isUserLoggedIn) ? <Navigate to='/' /> : <LoginPage />} />
-        <Route path="/register" element={(context.isUserLoggedIn) ? <Navigate to='/' /> :<RegisterPage/>} />
+        <Route
+          path="/"
+          element={
+            context.isUserLoggedIn ? <Dashboard /> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          path="/login"
+          element={context.isUserLoggedIn ? <Navigate to="/" /> : <LoginPage />}
+        />
+        <Route
+          path="/register"
+          element={
+            context.isUserLoggedIn ? <Navigate to="/" /> : <RegisterPage />
+          }
+        />
         <Route path="/c/:username" element={<ProfilePage />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/playlist" element={<PlaylistPage />} />
@@ -67,7 +80,7 @@ function App() {
         <Route path="/your-videos" element={<YourVideosPage />} />
         <Route path="/liked-videos" element={<LikedVideos />} />
         <Route path="/edit-video/:videoId" element={<EditVideo />} />
-        
+        <Route path="/playlist/:playlistId" element={<PlaylistDetails />} />
       </Routes>
     </div>
   );
