@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../context/userContext";
+import { Link } from "react-router-dom";
 
 const RegisterPage = () => {
   const [fullName, setFullName] = useState("");
@@ -26,7 +27,6 @@ const RegisterPage = () => {
       if (avatarFile) formData.append("avatar", avatarFile);
       if (coverFile) formData.append("coverImage", coverFile);
       console.log(formData.get("username"));
-      
 
       const response = await fetch(url, {
         method: "POST",
@@ -203,9 +203,12 @@ const RegisterPage = () => {
               </button>
             </div>
 
-            <p className="text-[#8daece] text-sm text-center underline px-4">
+            <Link
+              to="/login"
+              className="text-[#8daece] text-sm text-center underline px-4"
+            >
               Already have an account? Sign in
-            </p>
+            </Link>
           </div>
         </form>
       </div>

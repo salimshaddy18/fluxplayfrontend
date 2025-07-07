@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate, Link } from "react-router-dom";
 import { useUserContext } from "../../context/userContext";
 
 const LoginPage = () => {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate()
-  const context = useUserContext()
-
-  // console.log(email, password, userName);
+  const navigate = useNavigate();
+  const context = useUserContext();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -24,13 +22,15 @@ const LoginPage = () => {
         body: JSON.stringify({
           password,
           email,
-          userName
+          userName,
         }),
       });
       console.log(response);
-      if(response?.statusText==="OK") {
-        context.setisUserLoggedIn(true)
-        navigate("/")
+      if (response?.statusText === "OK") {
+        console.log("user loged in");
+        
+        context.setisUserLoggedIn(true);
+        navigate("/");
       }
     } catch (error) {
       console.log(error);
@@ -43,8 +43,6 @@ const LoginPage = () => {
       style={{ fontFamily: 'Inter, "Noto Sans", sans-serif' }}
     >
       <div className="layout-container flex h-full grow flex-col">
-        
-
         <div className="px-40 flex flex-1 justify-center py-5">
           <div className="layout-content-container flex flex-col w-[512px] max-w-[512px] py-5 max-w-[960px] flex-1">
             <h2 className="text-white tracking-light text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5">
@@ -105,9 +103,12 @@ const LoginPage = () => {
               </button>
             </div>
 
-            <p className="text-[#90accb] text-sm font-normal leading-normal pb-3 pt-1 px-4 text-center underline">
+            <Link
+              to="/register"
+              className="text-[#90accb] text-sm font-normal leading-normal pb-3 pt-1 px-4 text-center underline"
+            >
               Don't have an account? Sign up
-            </p>
+            </Link>
           </div>
         </div>
       </div>

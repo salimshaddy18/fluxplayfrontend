@@ -12,15 +12,23 @@ export const UserProvider = (props) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/v1/users/current-user", {
-          method: "GET",
-          credentials: "include",
-        });
+        const res = await fetch(
+          "http://localhost:8000/api/v1/users/current-user",
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
+
+        if (res.status != 200) {
+          throw new Error("user not logged in");
+        }
 
         const data = await res.json();
+        if (res.ok && data.user) {
+          console.log("testing");
 
-        if (res.ok && data?.data) {
-          setDetails(data.data);
+          setDetails(data.user);
           setisUserLoggedIn(true);
         } else {
           setDetails(null);
@@ -34,9 +42,9 @@ export const UserProvider = (props) => {
         setUserFetched(true);
       }
     };
-
+    
     fetchUser();
-  }, []);
+  }, [isUserLoggedIn]);
 
   // ✅ Logout function that clears cookies + context state
   const logoutUser = async () => {
@@ -54,7 +62,7 @@ export const UserProvider = (props) => {
     }
   };
 
-  return !userFetched ? (
+  return isUserLoggedIn && !userFetched ? (
     <p className="text-white">Loading...</p>
   ) : (
     <UserContext.Provider

@@ -22,28 +22,8 @@ function App() {
   const context = useUserContext();
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    isAvaliable();
     setLoading(false);
   }, []);
-  const isAvaliable = async () => {
-    try {
-      const url = "http://localhost:8000/api/v1/users/current-user";
-      const response = await fetch(url, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-      console.log(response);
-      if (response?.statusText === "OK") {
-        context.setisUserLoggedIn(true);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  console.log(context.isUserLoggedIn);
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen w-full text-3xl">
