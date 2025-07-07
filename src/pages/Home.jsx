@@ -54,9 +54,12 @@ const Dashboard = () => {
     >
       <div className="layout-container flex h-full grow flex-col">
         <div className="flex flex-1 justify-center py-5">
-          <Sidebar />
+          {/* Sidebar section */}
+          <div className="w-48 min-w-[12rem] border-r border-[#20364b]">
+            <Sidebar />
+          </div>
 
-          <div className="layout-content-container flex flex-col max-w-[960px] flex-1">
+          <div className="layout-content-container flex flex-col flex-1 px-20">
             {/* Header */}
             <header className="flex items-center justify-between border-b border-[#20364b] px-10 py-3">
               <div className="flex items-center gap-4 text-white">

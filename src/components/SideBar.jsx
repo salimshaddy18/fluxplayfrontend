@@ -6,16 +6,6 @@ const Sidebar = () => {
     <div className="layout-content-container flex flex-col w-60">
       <div className="flex h-full min-h-[700px] flex-col justify-between bg-[#0f1a24]">
         <div className="flex flex-col gap-4 px-3 py-4">
-          {/* Home */}
-          <Link
-            to="/"
-            className="flex items-center gap-3 px-3 py-2 rounded bg-[#20364b] hover:bg-[#2a4a64] transition-colors"
-          >
-            <div className="text-white">🏠</div>
-            <p className="text-white text-sm font-medium leading-normal">
-              Home
-            </p>
-          </Link>
 
           {/* History */}
           <Link
