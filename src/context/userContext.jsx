@@ -26,8 +26,6 @@ export const UserProvider = (props) => {
 
         const data = await res.json();
         if (res.ok && data.user) {
-          console.log("testing");
-
           setDetails(data.user);
           setisUserLoggedIn(true);
         } else {
@@ -42,11 +40,11 @@ export const UserProvider = (props) => {
         setUserFetched(true);
       }
     };
-    
+
     fetchUser();
   }, [isUserLoggedIn]);
 
-  // ✅ Logout function that clears cookies + context state
+  //Logout function that clears cookies + context state
   const logoutUser = async () => {
     try {
       await fetch("http://localhost:8000/api/v1/users/logout", {

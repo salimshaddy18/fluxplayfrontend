@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import VideoCard from "../components/VideoCard";
 import Sidebar from "../components/Sidebar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [uploads, setUploads] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState({ users: [], videos: [] });
+  const [showDropdown, setShowDropdown] = useState(false);
+  const navigate = useNavigate();
 
   const fetchAllVideos = async () => {
     try {
@@ -27,6 +30,8 @@ const Dashboard = () => {
   const handleSearch = async () => {
     if (!searchQuery.trim()) {
       fetchAllVideos();
+      setSearchResults({ users: [], videos: [] });
+      setShowDropdown(false);
       return;
     }
 
@@ -40,11 +45,23 @@ const Dashboard = () => {
           credentials: "include",
         }
       );
+
       const data = await res.json();
+
+      if (!res.ok) throw new Error(data.message);
       setUploads(data.data.videos || []);
+      setSearchResults(data.data);
+      setShowDropdown(true);
     } catch (error) {
       console.error("Search failed:", error);
     }
+  };
+
+  const handleUserClick = (username) => {
+    setSearchQuery("");
+    setSearchResults({ users: [], videos: [] });
+    setShowDropdown(false);
+    navigate(`/c/${username}`);
   };
 
   return (
@@ -93,7 +110,7 @@ const Dashboard = () => {
                 </Link>
 
                 {/* Search */}
-                <label className="flex flex-col min-w-40 h-10 max-w-64">
+                <label className="flex flex-col min-w-40 h-10 max-w-64 relative">
                   <div className="flex w-full items-stretch rounded h-full">
                     <div className="text-[#8daece] flex bg-[#20364b] items-center justify-center pl-4 rounded-l">
                       🔍
@@ -106,6 +123,33 @@ const Dashboard = () => {
                       className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded text-white border-none bg-[#20364b] h-full placeholder:text-[#8daece] px-4 rounded-l-none text-base font-normal leading-normal outline-none"
                     />
                   </div>
+
+                  {/* Dropdown search results */}
+                  {showDropdown && searchResults.users.length > 0 && (
+                    <div className="absolute z-10 mt-1 w-full bg-[#15222f] rounded shadow-lg max-h-64 overflow-y-auto border border-[#20364b] top-12">
+                      {searchResults.users.map((user) => (
+                        <div
+                          key={user.username}
+                          onClick={() => handleUserClick(user.username)}
+                          className="flex items-center gap-3 px-4 py-2 hover:bg-[#1e2f40] cursor-pointer"
+                        >
+                          <img
+                            src={user.avatar}
+                            alt={user.username}
+                            className="w-8 h-8 rounded-full object-cover"
+                          />
+                          <div>
+                            <p className="text-white font-medium">
+                              {user.fullName}
+                            </p>
+                            <p className="text-sm text-[#8daece]">
+                              @{user.username}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </label>
 
                 {/* Avatar Icon (Link to Profile/Channel) */}

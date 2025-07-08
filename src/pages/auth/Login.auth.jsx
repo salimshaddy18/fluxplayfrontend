@@ -25,10 +25,7 @@ const LoginPage = () => {
           userName,
         }),
       });
-      console.log(response);
       if (response?.statusText === "OK") {
-        console.log("user loged in");
-        
         context.setisUserLoggedIn(true);
         navigate("/");
       }

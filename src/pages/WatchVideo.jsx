@@ -64,19 +64,14 @@ const WatchVideo = () => {
   const handleSubscribe = async () => {
     if (!video?.owner?._id) return;
     try {
-      const res = await fetch(
+      await fetch(
         `http://localhost:8000/api/v1/subscriptions/c/${video.owner._id}`,
         {
           method: "POST",
           credentials: "include",
         }
       );
-      const data = await res.json();
-      if (data.ok) {
-        setSubscribed((prev) => !prev);
-      } else {
-        alert(data.message || "Subscription failed");
-      }
+      setSubscribed((prev) => !prev);
     } catch (err) {
       console.error("Subscription error:", err.message);
     }
@@ -346,7 +341,7 @@ const WatchVideo = () => {
                       : "bg-blue-600 hover:bg-blue-700"
                   }`}
                 >
-                  {subscribed ? "Unsubscribe" : "Subscribe"}
+                  {subscribed ? "Subscribed" : "Subscribe"}
                 </button>
               )}
             </div>
