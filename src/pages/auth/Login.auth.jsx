@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useUserContext } from "../../context/userContext";
+import { useUserContext } from "../context/userContext";
 
 const LoginPage = () => {
   const [userName, setUserName] = useState("");
@@ -25,10 +25,13 @@ const LoginPage = () => {
           userName,
         }),
       });
-      if (response?.statusText === "OK") {
+      console.log(response);
+
+      
+      //if (response?.statusText === "OK") {
         context.setisUserLoggedIn(true);
         navigate("/");
-      }
+      //}
     } catch (error) {
       console.log(error);
     }
