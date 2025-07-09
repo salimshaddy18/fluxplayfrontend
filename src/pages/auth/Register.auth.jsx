@@ -52,42 +52,6 @@ const RegisterPage = () => {
       style={{ fontFamily: 'Inter, "Noto Sans", sans-serif' }}
     >
       <div className="layout-container flex h-full grow flex-col">
-        <header className="flex items-center justify-between border-b border-solid border-b-[#20364b] px-10 py-3">
-          <div className="flex items-center gap-4 text-white">
-            <div className="size-4">
-              <svg
-                viewBox="0 0 48 48"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M6 6H42L36 24L42 42H6L12 24L6 6Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </div>
-            <h2 className="text-white text-lg font-bold tracking-[-0.015em]">
-              ConnectHub
-            </h2>
-          </div>
-          <div className="flex flex-1 justify-end gap-8">
-            <div className="flex items-center gap-9">
-              <a className="text-white text-sm font-medium" href="#">
-                Home
-              </a>
-              <a className="text-white text-sm font-medium" href="#">
-                About
-              </a>
-              <a className="text-white text-sm font-medium" href="#">
-                Contact
-              </a>
-            </div>
-            <button className="bg-[#20364b] text-white text-sm font-bold h-10 px-4 rounded">
-              <span className="truncate">Login</span>
-            </button>
-          </div>
-        </header>
-
         <form
           onSubmit={handleRegister}
           className="px-40 flex flex-1 justify-center py-5"
