@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useUserContext } from "../context/UserContext";
+import { useUserContext } from "../context/userContext";
 
 const SettingsPage = () => {
   const { details } = useUserContext();
