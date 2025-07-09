@@ -25,11 +25,14 @@ const UploadVideoPage = () => {
 
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:8000/api/v1/videos/upload-video", {
-        method: "POST",
-        credentials: "include",
-        body: formData,
-      });
+      const res = await fetch(
+        "https://fluxplay-backend.onrender.com/api/v1/videos/upload-video",
+        {
+          method: "POST",
+          credentials: "include",
+          body: formData,
+        }
+      );
 
       const result = await res.json();
 

@@ -15,7 +15,7 @@ const PlaylistPage = () => {
     const fetchPlaylists = async () => {
       try {
         const res = await fetch(
-          `http://localhost:8000/api/v1/playlists/user/${details._id}`,
+          `https://fluxplay-backend.onrender.com/api/v1/playlists/user/${details._id}`,
           {
             credentials: "include",
           }
@@ -39,8 +39,8 @@ const PlaylistPage = () => {
       return alert("Both name and description are required");
 
     const url = editingId
-      ? `http://localhost:8000/api/v1/playlists/${editingId}`
-      : "http://localhost:8000/api/v1/playlists";
+      ? `https://fluxplay-backend.onrender.com/api/v1/playlists/${editingId}`
+      : "https://fluxplay-backend.onrender.com/api/v1/playlists";
 
     const method = editingId ? "PATCH" : "POST";
 
@@ -80,7 +80,7 @@ const PlaylistPage = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:8000/api/v1/playlists/${playlistId}`,
+        `https://fluxplay-backend.onrender.com/api/v1/playlists/${playlistId}`,
         {
           method: "DELETE",
           credentials: "include",

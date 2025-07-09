@@ -16,7 +16,7 @@ const SettingsPage = () => {
   const handlePasswordUpdate = async () => {
     try {
       const res = await fetch(
-        "http://localhost:8000/api/v1/users/change-password",
+        "https://fluxplay-backend.onrender.com/api/v1/users/change-password",
         {
           method: "POST",
           credentials: "include",
@@ -40,7 +40,7 @@ const SettingsPage = () => {
   const handleAccountUpdate = async () => {
     try {
       const res = await fetch(
-        "http://localhost:8000/api/v1/users/update-account",
+        "https://fluxplay-backend.onrender.com/api/v1/users/update-account",
         {
           method: "PATCH",
           credentials: "include",
@@ -65,11 +65,14 @@ const SettingsPage = () => {
     formData.append("avatar", avatarFile);
 
     try {
-      const res = await fetch("http://localhost:8000/api/v1/users/avatar", {
-        method: "PATCH",
-        credentials: "include",
-        body: formData,
-      });
+      const res = await fetch(
+        "https://fluxplay-backend.onrender.com/api/v1/users/avatar",
+        {
+          method: "PATCH",
+          credentials: "include",
+          body: formData,
+        }
+      );
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
@@ -88,7 +91,7 @@ const SettingsPage = () => {
 
     try {
       const res = await fetch(
-        "http://localhost:8000/api/v1/users/cover-image",
+        "https://fluxplay-backend.onrender.com/api/v1/users/cover-image",
         {
           method: "PATCH",
           credentials: "include",

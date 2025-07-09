@@ -12,10 +12,13 @@ const Dashboard = () => {
 
   const fetchAllVideos = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/v1/videos/all", {
-        method: "GET",
-        credentials: "include",
-      });
+      const res = await fetch(
+        "https://fluxplay-backend.onrender.com/api/v1/videos/all",
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
       const data = await res.json();
       setUploads(data.data.videos || []);
     } catch (error) {
@@ -37,7 +40,7 @@ const Dashboard = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:8000/api/v1/search/all?q=${encodeURIComponent(
+        `https://fluxplay-backend.onrender.com/api/v1/search/all?q=${encodeURIComponent(
           searchQuery
         )}`,
         {

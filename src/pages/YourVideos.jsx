@@ -9,7 +9,7 @@ const YourVideosPage = () => {
     const fetchMyVideos = async () => {
       try {
         const res = await fetch(
-          "http://localhost:8000/api/v1/videos/my-videos",
+          "https://fluxplay-backend.onrender.com/api/v1/videos/my-videos",
           {
             credentials: "include",
           }

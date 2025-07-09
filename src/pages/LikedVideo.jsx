@@ -9,7 +9,7 @@ const LikedVideos = () => {
     const fetchLikedVideos = async () => {
       try {
         const res = await fetch(
-          "http://localhost:8000/api/v1/users/liked-videos",
+          "https://fluxplay-backend.onrender.com/api/v1/users/liked-videos",
           {
             method: "GET",
             credentials: "include",

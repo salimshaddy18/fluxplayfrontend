@@ -14,7 +14,7 @@ const EditVideo = () => {
     const fetchVideo = async () => {
       try {
         const res = await fetch(
-          `http://localhost:8000/api/v1/videos/user-video/${videoId}`,
+          `https://fluxplay-backend.onrender.com/api/v1/videos/user-video/${videoId}`,
           {
             credentials: "include",
           }
@@ -47,7 +47,7 @@ const EditVideo = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:8000/api/v1/videos/update-video/${videoId}`,
+        `https://fluxplay-backend.onrender.com/api/v1/videos/update-video/${videoId}`,
         {
           method: "PATCH",
           credentials: "include",

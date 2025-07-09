@@ -17,7 +17,7 @@ const RegisterPage = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const url = "http://localhost:8000/api/v1/users/register";
+      const url = "https://fluxplay-backend.onrender.com/api/v1/users/register";
 
       const formData = new FormData();
       formData.append("fullName", fullName);

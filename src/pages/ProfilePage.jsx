@@ -11,13 +11,13 @@ const ProfilePage = () => {
   const [subscribed, setSubscribed] = useState(false);
   const [error, setError] = useState("");
   const { details, setisUserLoggedIn } = useUserContext();
-  const user = details
+  const user = details;
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
         const res = await fetch(
-          `http://localhost:8000/api/v1/users/c/${username}`,
+          `https://fluxplay-backend.onrender.com/api/v1/users/c/${username}`,
           {
             method: "GET",
             credentials: "include",
@@ -25,31 +25,27 @@ const ProfilePage = () => {
         );
         const data = await res.json();
         // console.log(data);
-        
 
         if (!res.ok)
           throw new Error(data.message || "Failed to load user profile");
 
         const fetchedProfile = data.data;
         setProfile(fetchedProfile);
-        
-
-        
 
         if (user?._id && user._id !== fetchedProfile._id) {
           const subRes = await fetch(
-            `http://localhost:8000/api/v1/subscriptions/is-subscribed/${fetchedProfile._id}`,
+            `https://fluxplay-backend.onrender.com/api/v1/subscriptions/is-subscribed/${fetchedProfile._id}`,
             { credentials: "include" }
           );
           const subData = await subRes.json();
-          
+
           if (subRes.ok) {
             setSubscribed(subData.data);
           }
         }
 
         const videosRes = await fetch(
-          `http://localhost:8000/api/v1/videos/user/${fetchedProfile._id}/videos`,
+          `https://fluxplay-backend.onrender.com/api/v1/videos/user/${fetchedProfile._id}/videos`,
           {
             method: "GET",
             credentials: "include",
@@ -70,10 +66,13 @@ const ProfilePage = () => {
 
   const handleLogout = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/v1/users/logout", {
-        method: "POST",
-        credentials: "include",
-      });
+      const res = await fetch(
+        "https://fluxplay-backend.onrender.com/api/v1/users/logout",
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
 
       if (!res.ok) throw new Error("Logout failed");
       setisUserLoggedIn(false);
@@ -88,7 +87,7 @@ const ProfilePage = () => {
     if (!profile?._id) return;
     try {
       await fetch(
-        `http://localhost:8000/api/v1/subscriptions/c/${profile._id}`,
+        `https://fluxplay-backend.onrender.com/api/v1/subscriptions/c/${profile._id}`,
         {
           method: "POST",
           credentials: "include",

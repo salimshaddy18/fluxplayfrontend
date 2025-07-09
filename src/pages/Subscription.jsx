@@ -11,10 +11,13 @@ const SubscriptionsPage = () => {
     const fetchSubscribedChannels = async () => {
       try {
         if (!details?._id) return;
-        const response = await fetch(`http://localhost:8000/api/v1/subscriptions/c/${details._id}`, {
-          method: "GET",
-          credentials: "include", // includes cookies (important for auth)
-        });
+        const response = await fetch(
+          `https://fluxplay-backend.onrender.com/api/v1/subscriptions/c/${details._id}`,
+          {
+            method: "GET",
+            credentials: "include", // includes cookies (important for auth)
+          }
+        );
         const data = await response.json();
         if (response.ok) {
           setChannels(data.data || []);

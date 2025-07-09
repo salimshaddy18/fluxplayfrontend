@@ -12,7 +12,7 @@ const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const url = "http://localhost:8000/api/v1/users/login";
+      const url = "https://fluxplay-backend.onrender.com/api/v1/users/login";
       const response = await fetch(url, {
         method: "POST",
         headers: {

@@ -20,14 +20,14 @@ const WatchVideo = () => {
     const fetchVideo = async () => {
       try {
         const res = await fetch(
-          `http://localhost:8000/api/v1/videos/user-video/${videoId}`,
+          `https://fluxplay-backend.onrender.com/api/v1/videos/user-video/${videoId}`,
           { credentials: "include" }
         );
         const data = await res.json();
         setVideo(data.data);
 
         const likeRes = await fetch(
-          `http://localhost:8000/api/v1/videos/is-liked/${videoId}`,
+          `https://fluxplay-backend.onrender.com/api/v1/videos/is-liked/${videoId}`,
           { credentials: "include" }
         );
         const likeData = await likeRes.json();
@@ -35,7 +35,7 @@ const WatchVideo = () => {
 
         if (data?.data?.owner?._id && details?._id) {
           const subRes = await fetch(
-            `http://localhost:8000/api/v1/subscriptions/is-subscribed/${data.data.owner._id}`,
+            `https://fluxplay-backend.onrender.com/api/v1/subscriptions/is-subscribed/${data.data.owner._id}`,
             { credentials: "include" }
           );
           const subData = await subRes.json();
@@ -53,10 +53,13 @@ const WatchVideo = () => {
 
   useEffect(() => {
     if (!videoId) return;
-    fetch(`http://localhost:8000/api/v1/videos/incrementViews/${videoId}`, {
-      method: "PATCH",
-      credentials: "include",
-    }).catch((err) =>
+    fetch(
+      `https://fluxplay-backend.onrender.com/api/v1/videos/incrementViews/${videoId}`,
+      {
+        method: "PATCH",
+        credentials: "include",
+      }
+    ).catch((err) =>
       console.error("Failed to increment video views:", err.message)
     );
   }, [videoId]);
@@ -65,7 +68,7 @@ const WatchVideo = () => {
     if (!video?.owner?._id) return;
     try {
       await fetch(
-        `http://localhost:8000/api/v1/subscriptions/c/${video.owner._id}`,
+        `https://fluxplay-backend.onrender.com/api/v1/subscriptions/c/${video.owner._id}`,
         {
           method: "POST",
           credentials: "include",
@@ -81,7 +84,7 @@ const WatchVideo = () => {
     const fetchComments = async () => {
       try {
         const res = await fetch(
-          `http://localhost:8000/api/v1/comments/${videoId}`,
+          `https://fluxplay-backend.onrender.com/api/v1/comments/${videoId}`,
           { credentials: "include" }
         );
         const data = await res.json();
@@ -101,7 +104,7 @@ const WatchVideo = () => {
       if (!details?._id) return;
       try {
         const res = await fetch(
-          `http://localhost:8000/api/v1/playlists/user/${details._id}`,
+          `https://fluxplay-backend.onrender.com/api/v1/playlists/user/${details._id}`,
           {
             credentials: "include",
           }
@@ -122,7 +125,7 @@ const WatchVideo = () => {
     if (!commentText.trim()) return;
     try {
       const res = await fetch(
-        `http://localhost:8000/api/v1/comments/${videoId}`,
+        `https://fluxplay-backend.onrender.com/api/v1/comments/${videoId}`,
         {
           method: "POST",
           credentials: "include",
@@ -148,7 +151,7 @@ const WatchVideo = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:8000/api/v1/comments/c/${commentId}`,
+        `https://fluxplay-backend.onrender.com/api/v1/comments/c/${commentId}`,
         {
           method: "DELETE",
           credentials: "include",
@@ -169,8 +172,8 @@ const WatchVideo = () => {
   const toggleLike = async () => {
     try {
       const url = liked
-        ? `http://localhost:8000/api/v1/videos/decrementLike/${videoId}`
-        : `http://localhost:8000/api/v1/videos/incrementLike/${videoId}`;
+        ? `https://fluxplay-backend.onrender.com/api/v1/videos/decrementLike/${videoId}`
+        : `https://fluxplay-backend.onrender.com/api/v1/videos/incrementLike/${videoId}`;
 
       const res = await fetch(url, {
         method: "GET",
@@ -198,7 +201,7 @@ const WatchVideo = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:8000/api/v1/videos/delete-video/${videoId}`,
+        `https://fluxplay-backend.onrender.com/api/v1/videos/delete-video/${videoId}`,
         {
           method: "DELETE",
           credentials: "include",
@@ -221,7 +224,7 @@ const WatchVideo = () => {
   const handleAddToPlaylist = async (playlistId) => {
     try {
       const res = await fetch(
-        `http://localhost:8000/api/v1/playlists/add/${videoId}/${playlistId}`,
+        `https://fluxplay-backend.onrender.com/api/v1/playlists/add/${videoId}/${playlistId}`,
         {
           method: "PATCH",
           credentials: "include",

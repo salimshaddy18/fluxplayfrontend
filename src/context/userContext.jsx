@@ -13,7 +13,7 @@ export const UserProvider = (props) => {
     const fetchUser = async () => {
       try {
         const res = await fetch(
-          "http://localhost:8000/api/v1/users/current-user",
+          "https://fluxplay-backend.onrender.com/api/v1/users/current-user",
           {
             method: "GET",
             credentials: "include",
@@ -47,7 +47,7 @@ export const UserProvider = (props) => {
   //Logout function that clears cookies + context state
   const logoutUser = async () => {
     try {
-      await fetch("http://localhost:8000/api/v1/users/logout", {
+      await fetch("https://fluxplay-backend.onrender.com/api/v1/users/logout", {
         method: "POST",
         credentials: "include",
       });

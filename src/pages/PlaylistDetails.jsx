@@ -9,7 +9,7 @@ const PlaylistDetails = () => {
   const fetchPlaylist = async () => {
     try {
       const res = await fetch(
-        `http://localhost:8000/api/v1/playlists/${playlistId}`,
+        `https://fluxplay-backend.onrender.com/api/v1/playlists/${playlistId}`,
         {
           credentials: "include",
         }
@@ -35,7 +35,7 @@ const PlaylistDetails = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:8000/api/v1/playlists/remove/${videoId}/${playlistId}`,
+        `https://fluxplay-backend.onrender.com/api/v1/playlists/remove/${videoId}/${playlistId}`,
         {
           method: "PATCH",
           credentials: "include",

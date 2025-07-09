@@ -8,10 +8,13 @@ const WatchHistory = () => {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/v1/users/history", {
-          method: "GET",
-          credentials: "include", // include JWT cookies
-        });
+        const res = await fetch(
+          "https://fluxplay-backend.onrender.com/api/v1/users/history",
+          {
+            method: "GET",
+            credentials: "include", // include JWT cookies
+          }
+        );
 
         const data = await res.json();
 
@@ -30,7 +33,8 @@ const WatchHistory = () => {
     fetchHistory();
   }, []);
 
-  if (loading) return <p className="text-white p-6">Loading watch history...</p>;
+  if (loading)
+    return <p className="text-white p-6">Loading watch history...</p>;
 
   return (
     <div className="min-h-screen bg-[#0f1a24] text-white p-6">
@@ -70,7 +74,9 @@ const WatchHistory = () => {
                     <span>@{video.owner.username}</span>
                   </>
                 )}
-                <span className="ml-auto">{video.views?.toLocaleString() || 0} views</span>
+                <span className="ml-auto">
+                  {video.views?.toLocaleString() || 0} views
+                </span>
               </div>
             </Link>
           ))}
