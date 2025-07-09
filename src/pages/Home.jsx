@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import VideoCard from "../components/VideoCard";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/SideBar";
 import { Link, useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
