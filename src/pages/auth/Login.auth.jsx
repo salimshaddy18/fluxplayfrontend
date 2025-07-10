@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useUserContext } from "../../context/userContext";
 
-
 const LoginPage = () => {
-  const [userName, setUserName] = useState("");
+  const [username, setUsername] = useState(""); 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -21,20 +20,24 @@ const LoginPage = () => {
         },
         credentials: "include",
         body: JSON.stringify({
-          password,
+          username,
           email,
-          userName,
+          password,
         }),
       });
-      console.log(response);
 
-      
-      //if (response?.statusText === "OK") {
+      const data = await response.json();
+      console.log("Login response:", data);
+
+      if (response.ok && data?.user) {
         context.setisUserLoggedIn(true);
         navigate("/");
-      //}
+      } else {
+        alert(data?.message || "Login failed. Please try again.");
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Login error:", error);
+      alert("An error occurred while logging in.");
     }
   };
 
@@ -50,6 +53,7 @@ const LoginPage = () => {
               Welcome back
             </h2>
 
+            {/* Username input */}
             <div className="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
               <label className="flex flex-col min-w-40 flex-1">
                 <p className="text-white text-base font-medium leading-normal pb-2">
@@ -59,12 +63,13 @@ const LoginPage = () => {
                   type="text"
                   placeholder={`Enter your username`}
                   className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded text-white focus:outline-0 focus:ring-0 border-none bg-[#223549] focus:border-none h-14 placeholder:text-[#90accb] p-4 text-base font-normal leading-normal"
-                  value={userName}
-                  onChange={(e) => setUserName(e.target.value)}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
               </label>
             </div>
 
+            {/* Email input */}
             <div className="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
               <label className="flex flex-col min-w-40 flex-1">
                 <p className="text-white text-base font-medium leading-normal pb-2">
@@ -80,6 +85,7 @@ const LoginPage = () => {
               </label>
             </div>
 
+            {/* Password input */}
             <div className="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
               <label className="flex flex-col min-w-40 flex-1">
                 <p className="text-white text-base font-medium leading-normal pb-2">
@@ -95,15 +101,17 @@ const LoginPage = () => {
               </label>
             </div>
 
+            {/* Login Button */}
             <div className="flex px-4 py-3">
               <button
-                onClick={(e) => handleLogin(e)}
+                onClick={handleLogin}
                 className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded h-12 px-5 flex-1 bg-[#3490f3] text-white text-base font-bold leading-normal tracking-[0.015em]"
               >
                 <span className="truncate">Login</span>
               </button>
             </div>
 
+            {/* Link to Register */}
             <Link
               to="/register"
               className="text-[#90accb] text-sm font-normal leading-normal pb-3 pt-1 px-4 text-center underline"
