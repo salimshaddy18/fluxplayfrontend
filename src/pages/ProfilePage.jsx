@@ -62,6 +62,8 @@ const ProfilePage = () => {
     };
 
     fetchUserProfile();
+    console.log("username",details?.fullName)
+    console.log("username from route",username)
   }, [username, user]);
 
   const handleLogout = async () => {

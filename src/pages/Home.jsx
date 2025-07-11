@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import VideoCard from "../components/VideoCard";
 import Sidebar from "../components/SideBar";
 import { Link, useNavigate } from "react-router-dom";
+import { useUserContext } from "../context/userContext";
 
 const Dashboard = () => {
   const [uploads, setUploads] = useState([]);
@@ -9,7 +10,7 @@ const Dashboard = () => {
   const [searchResults, setSearchResults] = useState({ users: [], videos: [] });
   const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
-
+  const {details}=useUserContext()
   const fetchAllVideos = async () => {
     try {
       const res = await fetch(
@@ -156,7 +157,7 @@ const Dashboard = () => {
                 </label>
 
                 {/* Avatar Icon (Link to Profile/Channel) */}
-                <Link to="/c/pakoda">
+                <Link to={`/c/${details?.fullName}`}>
                   <div className="size-10 rounded-full bg-[#20364b] flex items-center justify-center cursor-pointer">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

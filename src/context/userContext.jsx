@@ -28,6 +28,7 @@ export const UserProvider = (props) => {
         console.log(data);
         
         if (data?.user) {
+          console.log("user", data.user)
           setDetails(data.user);
           setisUserLoggedIn(true);
         } else {
