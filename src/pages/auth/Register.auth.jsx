@@ -36,7 +36,7 @@ const RegisterPage = () => {
 
       console.log(response);
 
-      if (response.statusText === "Created") {
+      if (response.status == 200) {
         navigate("/login");
       } else {
         console.error("Registration failed", response);

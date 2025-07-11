@@ -20,9 +20,9 @@ export const UserProvider = (props) => {
           }
         );
 
-        // if (res.status != 200) {
-        //   throw new Error("user not logged in");
-        // }
+        if (res.status != 200) {
+          throw new Error("user not logged in");
+        }
 
         const data = await res.json();
         console.log(data);
