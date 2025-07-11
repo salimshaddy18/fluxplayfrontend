@@ -29,8 +29,10 @@ const LoginPage = () => {
       const data = await response.json();
       console.log("Login response:", data);
 
-      if (response.ok && data?.user) {
+      if (data?.data?.user) {
         context.setisUserLoggedIn(true);
+        console.log("done ... ");
+        
         navigate("/");
       } else {
         alert(data?.message || "Login failed. Please try again.");

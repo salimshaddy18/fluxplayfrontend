@@ -73,8 +73,11 @@ const ProfilePage = () => {
           credentials: "include",
         }
       );
-
-      if (!res.ok) throw new Error("Logout failed");
+      const data = await res.json();
+      console.log(data);
+      console.log(res);
+      
+      if (res.status != 200) throw new Error("Logout failed");
       setisUserLoggedIn(false);
       navigate("/login");
     } catch (err) {
