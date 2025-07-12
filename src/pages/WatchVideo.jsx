@@ -395,7 +395,7 @@ const WatchVideo = () => {
                     </button>
                   )}
                 </div>
-                <p className="text-gray-300">{c.comment}</p>
+                <p className="text-gray-300">{c.content}</p>
                 <p className="text-xs text-gray-500">
                   {new Date(c.createdAt).toLocaleString()}
                 </p>
