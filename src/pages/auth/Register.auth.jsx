@@ -123,9 +123,13 @@ const RegisterPage = () => {
             {/* Upload Avatar */}
             <div className="flex flex-col p-4">
               <div className="flex flex-col items-center gap-6 rounded border-2 border-dashed border-[#2e4e6b] px-6 py-14">
-                <p className="text-white text-lg font-bold text-center">
+                <p className="text-white text-lg font-bold text-center relative">
                   Upload Avatar
+                  <span className="text-red-500 absolute -top-1 -right-4 text-xl font-bold">
+                    !
+                  </span>
                 </p>
+
                 <p className="text-white text-sm text-center">
                   Click below to upload your profile picture
                 </p>
@@ -141,9 +145,13 @@ const RegisterPage = () => {
             {/* Upload Cover */}
             <div className="flex flex-col p-4">
               <div className="flex flex-col items-center gap-6 rounded border-2 border-dashed border-[#2e4e6b] px-6 py-14">
-                <p className="text-white text-lg font-bold text-center">
+                <p className="text-white text-lg font-bold text-center relative">
                   Upload Cover Image
+                  <span className="text-red-500 absolute -top-1 -right-4 text-xl font-bold">
+                    !
+                  </span>
                 </p>
+
                 <p className="text-white text-sm text-center">
                   Click below to upload a cover image for your profile
                 </p>
