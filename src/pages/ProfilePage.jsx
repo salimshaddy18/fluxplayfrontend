@@ -17,14 +17,18 @@ const ProfilePage = () => {
     const fetchUserProfile = async () => {
       try {
         const res = await fetch(
-          `https://fluxplay-backend.onrender.com/api/v1/users/c/${username}`,
+          `https://fluxplay-backend.onrender.com/api/v1/users/c/${username.toLowerCase()}`,
           {
             method: "GET",
             credentials: "include",
           }
         );
         const data = await res.json();
-        // console.log(data);
+
+        if (res.status === 404) {
+          setError("User not found");
+          return;
+        }
 
         if (!res.ok)
           throw new Error(data.message || "Failed to load user profile");
@@ -62,8 +66,8 @@ const ProfilePage = () => {
     };
 
     fetchUserProfile();
-    console.log("username",details?.fullName)
-    console.log("username from route",username)
+    console.log("username", details?.fullName);
+    console.log("username from route", username);
   }, [username, user]);
 
   const handleLogout = async () => {
@@ -78,7 +82,7 @@ const ProfilePage = () => {
       const data = await res.json();
       console.log(data);
       console.log(res);
-      
+
       if (res.status != 200) throw new Error("Logout failed");
       setisUserLoggedIn(false);
       navigate("/login");
