@@ -157,7 +157,7 @@ const Dashboard = () => {
                 </label>
 
                 {/* Avatar Icon (Link to Profile/Channel) */}
-                <Link to={`/c/${details?.fullName}`}>
+                <Link to={`/c/${details?.username}`}>
                   <div className="size-10 rounded-full bg-[#20364b] flex items-center justify-center cursor-pointer">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
