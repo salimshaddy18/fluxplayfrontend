@@ -137,6 +137,7 @@ Experience FluxPlay in action with our live demo: [fluxplayfrontend-5f27.vercel.
 The application connects to a backend API hosted on Render:
 
 - **Base URL**: `https://fluxplay-backend.onrender.com/api/v1`
+- **Backend github link: `https://github.com/salimshaddy18/FluxPlay-backend`
 - **Authentication**: Cookie-based sessions
 - **CORS**: Configured for cross-origin requests
 
@@ -146,21 +147,6 @@ No environment variables are currently required as the backend URL is hardcoded.
 
 - `VITE_API_BASE_URL` - Backend API URL
 - `VITE_APP_NAME` - Application name
-
-## 🚀 Deployment
-
-### Build for Production
-
-```bash
-npm run build
-```
-
-### Deploy to Vercel/Netlify
-
-1. Connect your repository
-2. Set build command: `npm run build`
-3. Set output directory: `dist`
-4. Deploy
 
 ## 🤝 Contributing
 
