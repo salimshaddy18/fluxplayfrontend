@@ -10,35 +10,66 @@ const Dashboard = () => {
   const [searchResults, setSearchResults] = useState({ users: [], videos: [] });
   const [showDropdown, setShowDropdown] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMoreVideos, setHasMoreVideos] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const videosPerPage = 10;
   const navigate = useNavigate();
   const { details } = useUserContext();
 
-  const fetchAllVideos = async () => {
+  const fetchAllVideos = async (page = 1, append = false) => {
     try {
-      setLoading(true);
+      if (page === 1) {
+        setLoading(true);
+      } else {
+        setLoadingMore(true);
+      }
+
       const res = await fetch(
-        "https://fluxplay-backend.onrender.com/api/v1/videos/all",
+        `https://fluxplay-backend.onrender.com/api/v1/videos/all?page=${page}&limit=${videosPerPage}`,
         {
           method: "GET",
           credentials: "include",
         }
       );
       const data = await res.json();
-      setUploads(data.data.videos || []);
+
+      if (res.ok) {
+        const newVideos = data.data.videos || [];
+
+        if (append) {
+          setUploads((prev) => [...prev, ...newVideos]);
+        } else {
+          setUploads(newVideos);
+        }
+
+        // Check if there are more videos to load
+        setHasMoreVideos(newVideos.length === videosPerPage);
+      } else {
+        console.error("Failed to fetch videos:", data.message);
+      }
     } catch (error) {
       console.error("Failed to fetch videos:", error);
     } finally {
       setLoading(false);
+      setLoadingMore(false);
     }
   };
 
+  const loadMoreVideos = async () => {
+    const nextPage = currentPage + 1;
+    setCurrentPage(nextPage);
+    await fetchAllVideos(nextPage, true);
+  };
+
   useEffect(() => {
-    fetchAllVideos();
+    fetchAllVideos(1, false);
   }, []);
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) {
-      fetchAllVideos();
+      setCurrentPage(1);
+      fetchAllVideos(1, false);
       setSearchResults({ users: [], videos: [] });
       setShowDropdown(false);
       return;
@@ -61,6 +92,7 @@ const Dashboard = () => {
       setUploads(data.data.videos || []);
       setSearchResults(data.data);
       setShowDropdown(true);
+      setHasMoreVideos(false); // Disable load more for search results
     } catch (error) {
       console.error("Search failed:", error);
     }
@@ -243,6 +275,41 @@ const Dashboard = () => {
             </div>
           )}
         </div>
+
+        {/* Load More Button */}
+        {hasMoreVideos && uploads.length > 0 && !showDropdown && (
+          <div className="flex justify-center pb-8">
+            <button
+              onClick={loadMoreVideos}
+              disabled={loadingMore}
+              className="gradient-button px-8 py-3 rounded-lg text-white font-medium transition-all duration-300 hover-lift disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            >
+              {loadingMore ? (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                  Loading...
+                </>
+              ) : (
+                <>
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                  Load More Videos
+                </>
+              )}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
