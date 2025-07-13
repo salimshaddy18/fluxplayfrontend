@@ -10,7 +10,7 @@ const Dashboard = () => {
   const [searchResults, setSearchResults] = useState({ users: [], videos: [] });
   const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
-  const {details}=useUserContext()
+  const { details } = useUserContext();
   const fetchAllVideos = async () => {
     try {
       const res = await fetch(
@@ -69,133 +69,159 @@ const Dashboard = () => {
   };
 
   return (
-    <div
-      className="relative flex min-h-screen flex-col bg-[#0f1a24] overflow-x-hidden"
-      style={{ fontFamily: '"Be Vietnam Pro", "Noto Sans", sans-serif' }}
-    >
-      <div className="layout-container flex h-full grow flex-col">
-        <div className="flex flex-1 justify-center py-5">
-          {/* Sidebar section */}
-          <div className="w-48 min-w-[12rem] border-r border-[#20364b]">
-            <Sidebar />
+    <div className="flex min-h-screen gradient-bg">
+      {/* Sidebar */}
+      <div className="w-60 h-screen sticky top-0 z-30 border-r border-[#20364b]/50 shadow-glow py-20">
+        <Sidebar />
+      </div>
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col px-20">
+        {/* Header */}
+        <header className="sticky top-0 z-20 glass flex items-center justify-between border-b border-[#20364b]/30 px-10 py-4 rounded-lg mx-4 mt-0 shadow-card backdrop-blur">
+          <div className="flex items-center gap-4 text-white">
+            <div className="size-5 hover-lift">
+              <svg
+                viewBox="0 0 48 48"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-full h-full text-gradient"
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M24 4H42V17.3333V30.6667H24V44H6V30.6667V17.3333H24V4Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </div>
+            <h2 className="text-gradient text-xl font-bold leading-tight tracking-[-0.015em]">
+              FluxPlay
+            </h2>
           </div>
-
-          <div className="layout-content-container flex flex-col flex-1 px-20">
-            {/* Header */}
-            <header className="flex items-center justify-between border-b border-[#20364b] px-10 py-3">
-              <div className="flex items-center gap-4 text-white">
-                <div className="size-4">
+          <div className="flex items-center gap-4">
+            {/* ➕ Plus Button */}
+            <Link
+              to="/upload"
+              className="gradient-button w-12 h-12 flex items-center justify-center rounded-full text-white text-xl font-bold transition-all duration-300 hover-lift"
+              title="Upload Video"
+            >
+              +
+            </Link>
+            {/* Search */}
+            <label className="flex flex-col min-w-40 h-12 max-w-96 w-full relative">
+              <div className="flex w-full items-stretch rounded-lg h-full glass shadow-glow">
+                <div className="text-[#8daece] flex bg-[#20364b]/50 items-center justify-center pl-4 rounded-l-lg">
                   <svg
-                    viewBox="0 0 48 48"
+                    className="w-5 h-5"
                     fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
                     <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M24 4H42V17.3333V30.6667H24V44H6V30.6667V17.3333H24V4Z"
-                      fill="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                     />
                   </svg>
                 </div>
-                <h2 className="text-lg font-bold leading-tight tracking-[-0.015em]">
-                  FluxPlay
-                </h2>
+                <input
+                  placeholder="Search videos and creators..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                  className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-r-lg text-white border-none bg-transparent h-full placeholder:text-[#8daece] px-4 text-base font-normal leading-normal outline-none"
+                />
               </div>
-
-              <div className="flex items-center gap-4">
-                {/* ➕ Plus Button */}
-                <Link
-                  to="/upload"
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-[#20364b] hover:bg-[#2a4a64] text-white text-xl font-bold transition"
-                  title="Upload Video"
-                >
-                  +
-                </Link>
-
-                {/* Search */}
-                <label className="flex flex-col min-w-40 h-10 max-w-64 relative">
-                  <div className="flex w-full items-stretch rounded h-full">
-                    <div className="text-[#8daece] flex bg-[#20364b] items-center justify-center pl-4 rounded-l">
-                      🔍
-                    </div>
-                    <input
-                      placeholder="Search"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                      className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded text-white border-none bg-[#20364b] h-full placeholder:text-[#8daece] px-4 rounded-l-none text-base font-normal leading-normal outline-none"
-                    />
-                  </div>
-
-                  {/* Dropdown search results */}
-                  {showDropdown && searchResults.users.length > 0 && (
-                    <div className="absolute z-10 mt-1 w-full bg-[#15222f] rounded shadow-lg max-h-64 overflow-y-auto border border-[#20364b] top-12">
-                      {searchResults.users.map((user) => (
-                        <div
-                          key={user.username}
-                          onClick={() => handleUserClick(user.username)}
-                          className="flex items-center gap-3 px-4 py-2 hover:bg-[#1e2f40] cursor-pointer"
-                        >
-                          <img
-                            src={user.avatar}
-                            alt={user.username}
-                            className="w-8 h-8 rounded-full object-cover"
-                          />
-                          <div>
-                            <p className="text-white font-medium">
-                              {user.fullName}
-                            </p>
-                            <p className="text-sm text-[#8daece]">
-                              @{user.username}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </label>
-
-                {/* Avatar Icon (Link to Profile/Channel) */}
-                <Link to={`/c/${details?.username}`}>
-                  <div className="size-10 rounded-full bg-[#20364b] flex items-center justify-center cursor-pointer">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      className="size-6 text-white"
+              {/* Dropdown search results */}
+              {showDropdown && searchResults.users.length > 0 && (
+                <div className="absolute z-10 mt-2 w-full glass rounded-lg shadow-card max-h-64 overflow-y-auto border border-[#20364b]/30 top-14">
+                  {searchResults.users.map((user) => (
+                    <div
+                      key={user.username}
+                      onClick={() => handleUserClick(user.username)}
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-[#1e2f40]/50 cursor-pointer transition-colors duration-200"
                     >
-                      <path
-                        fillRule="evenodd"
-                        d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
-                        clipRule="evenodd"
+                      <img
+                        src={user.avatar}
+                        alt={user.username}
+                        className="w-10 h-10 rounded-full object-cover border-2 border-[#3490f3]/20"
                       />
-                    </svg>
-                  </div>
-                </Link>
-              </div>
-            </header>
-
-            {/* Video Cards Grid */}
-            <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4 p-4">
-              {uploads.length > 0 ? (
-                uploads.map((video, index) => (
-                  <VideoCard
-                    key={index}
-                    videoId={video._id}
-                    title={video.title}
-                    thumbnailUrl={video.thumbnail}
-                    views={video.views}
-                    likes={video.likes}
+                      <div>
+                        <p className="text-white font-medium">
+                          {user.fullName}
+                        </p>
+                        <p className="text-sm text-[#8daece]">
+                          @{user.username}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </label>
+            {/* Avatar Icon (Link to Profile/Channel) */}
+            <Link to={`/c/${details?.username}`}>
+              <div className="size-12 rounded-full gradient-card flex items-center justify-center cursor-pointer hover-lift border-2 border-[#3490f3]/20">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="size-6 text-white"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
+                    clipRule="evenodd"
                   />
-                ))
-              ) : (
-                <p className="text-white text-sm col-span-full">
+                </svg>
+              </div>
+            </Link>
+          </div>
+        </header>
+        {/* Video Cards Grid */}
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-6 p-6">
+          {uploads.length > 0 ? (
+            uploads.map((video, index) => (
+              <div
+                key={index}
+                className="fade-in"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <VideoCard
+                  videoId={video._id}
+                  title={video.title}
+                  thumbnailUrl={video.thumbnail}
+                  views={video.views}
+                  likes={video.likes}
+                />
+              </div>
+            ))
+          ) : (
+            <div className="col-span-full text-center py-12">
+              <div className="text-[#8daece] text-lg mb-4">
+                <svg
+                  className="w-16 h-16 mx-auto mb-4 opacity-50"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1}
+                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                  />
+                </svg>
+                <p className="text-white text-xl font-medium">
                   No videos uploaded yet.
                 </p>
-              )}
+                <p className="text-[#8daece] text-sm mt-2">
+                  Be the first to share your content!
+                </p>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

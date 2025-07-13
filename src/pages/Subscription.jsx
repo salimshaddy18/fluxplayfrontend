@@ -38,42 +38,140 @@ const SubscriptionsPage = () => {
     }
   }, [details._id, isUserLoggedIn]); // include refreshTime here
 
-  if (loading) return <p className="text-white p-6">Loading...</p>;
+  if (loading)
+    return (
+      <div className="gradient-bg relative flex size-full min-h-screen flex-col overflow-x-hidden">
+        <div className="flex items-center justify-center h-full">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#3490f3] mx-auto mb-4"></div>
+            <p className="text-white text-lg">Loading subscriptions...</p>
+          </div>
+        </div>
+      </div>
+    );
+
   if (!isUserLoggedIn)
     return (
-      <p className="text-white p-6">Please log in to view subscriptions.</p>
+      <div className="gradient-bg relative flex size-full min-h-screen flex-col overflow-x-hidden">
+        <div className="flex items-center justify-center h-full">
+          <div className="text-center">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-[#3490f3] to-[#2a7dd4] flex items-center justify-center">
+              <svg
+                className="w-8 h-8 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                />
+              </svg>
+            </div>
+            <h3 className="text-white text-xl font-semibold mb-2">
+              Login Required
+            </h3>
+            <p className="text-[#8daece]">
+              Please log in to view your subscriptions.
+            </p>
+          </div>
+        </div>
+      </div>
     );
 
   return (
-    <div className="min-h-screen bg-[#0f1a24] text-white p-6">
-      <h1 className="text-2xl font-bold mb-4">Your Subscriptions</h1>
-      {channels.length === 0 ? (
-        <p>You haven't subscribed to any channels.</p>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {channels.map((channel) => (
-            <div
-              key={channel._id}
-              className="bg-[#1c2b3a] p-4 rounded-lg shadow hover:shadow-lg transition"
-            >
-              <div className="flex items-center gap-4">
-                <img
-                  src={channel.avatar || "/default-avatar.png"}
-                  alt={channel.username}
-                  className="w-12 h-12 rounded-full object-cover"
-                />
-                <div>
-                  <p className="text-lg font-semibold">{channel.fullName}</p>
-                  <p className="text-sm text-[#8daece]">@{channel.username}</p>
-                  <p className="text-sm text-[#8daece]">
-                    Subscribers: {channel.subscriberCount}
-                  </p>
-                </div>
+    <div className="gradient-bg relative flex size-full min-h-screen flex-col overflow-x-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `radial-gradient(circle at 25% 25%, #3490f3 0%, transparent 50%),
+                          radial-gradient(circle at 75% 75%, #2a7dd4 0%, transparent 50%)`,
+          }}
+        ></div>
+      </div>
+
+      <div className="layout-container flex h-full grow flex-col relative z-10">
+        <div className="px-40 flex flex-1 justify-center py-5">
+          <div className="layout-content-container flex flex-col w-full max-w-[1200px] py-5 flex-1">
+            {/* Header */}
+            <div className="text-center mb-8 fade-in">
+              <div className="mb-6">
+                <h1 className="text-gradient text-4xl font-bold mb-2">
+                  Your Subscriptions
+                </h1>
+                <p className="text-[#8daece] text-lg">
+                  Channels you're subscribed to
+                </p>
               </div>
             </div>
-          ))}
+
+            {/* Content */}
+            <div
+              className="glass rounded-2xl p-8 shadow-card fade-in"
+              style={{ animationDelay: "0.2s" }}
+            >
+              {channels.length === 0 ? (
+                <div className="text-center py-12">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-[#3490f3] to-[#2a7dd4] flex items-center justify-center">
+                    <svg
+                      className="w-8 h-8 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-white text-xl font-semibold mb-2">
+                    No Subscriptions Yet
+                  </h3>
+                  <p className="text-[#8daece]">
+                    You haven't subscribed to any channels yet.
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {channels.map((channel, index) => (
+                    <div
+                      key={channel._id}
+                      className="glass rounded-xl p-6 border border-[#3490f3]/20 hover:border-[#3490f3]/40 transition-all duration-300 fade-in hover-lift"
+                      style={{ animationDelay: `${index * 0.1}s` }}
+                    >
+                      <div className="flex items-center gap-4">
+                        <img
+                          src={channel.avatar || "/default-avatar.png"}
+                          alt={channel.username}
+                          className="w-16 h-16 rounded-full object-cover border-2 border-[#3490f3]/20"
+                        />
+                        <div className="flex-1">
+                          <h3 className="text-white text-lg font-semibold mb-1">
+                            {channel.fullName}
+                          </h3>
+                          <p className="text-[#8daece] text-sm mb-1">
+                            @{channel.username}
+                          </p>
+                          <p className="text-[#90accb] text-xs">
+                            {channel.subscriberCount} subscribers
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };

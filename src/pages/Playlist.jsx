@@ -98,111 +98,218 @@ const PlaylistPage = () => {
   };
 
   return (
-    <div
-      className="relative flex size-full min-h-screen flex-col bg-[#0f1a24] dark group/design-root overflow-x-hidden"
-      style={{ fontFamily: '"Be Vietnam Pro", "Noto Sans", sans-serif' }}
-    >
-      <div className="layout-container flex h-full grow flex-col">
+    <div className="gradient-bg relative flex size-full min-h-screen flex-col overflow-x-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `radial-gradient(circle at 25% 25%, #3490f3 0%, transparent 50%),
+                          radial-gradient(circle at 75% 75%, #2a7dd4 0%, transparent 50%)`,
+          }}
+        ></div>
+      </div>
+
+      <div className="layout-container flex h-full grow flex-col relative z-10">
         <div className="px-40 flex flex-1 justify-center py-5">
-          <div className="layout-content-container flex flex-col max-w-[960px] flex-1">
-            <div className="flex flex-wrap justify-between gap-3 p-4">
-              <p className="text-white tracking-light text-[32px] font-bold leading-tight min-w-72">
-                My Playlists
-              </p>
-              <button
-                onClick={() => {
-                  setShowForm((prev) => !prev);
-                  setEditingId(null);
-                  setNewPlaylist({ name: "", description: "" });
-                }}
-                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded h-8 px-4 bg-[#20364b] text-white text-sm font-medium leading-normal"
-              >
-                <span className="truncate">
-                  {showForm ? "Cancel" : "New Playlist"}
-                </span>
-              </button>
+          <div className="layout-content-container flex flex-col w-full max-w-[1200px] py-5 flex-1">
+            {/* Header */}
+            <div className="text-center mb-8 fade-in">
+              <div className="mb-6">
+                <h1 className="text-gradient text-4xl font-bold mb-2">
+                  My Playlists
+                </h1>
+                <p className="text-[#8daece] text-lg">
+                  Organize your favorite videos
+                </p>
+              </div>
             </div>
 
-            {showForm && (
-              <div className="px-4 space-y-2 mb-4">
-                <input
-                  type="text"
-                  placeholder="Playlist Name"
-                  value={newPlaylist.name}
-                  onChange={(e) =>
-                    setNewPlaylist((p) => ({ ...p, name: e.target.value }))
-                  }
-                  className="w-full px-3 py-2 rounded bg-[#1b2e3f] text-white border border-gray-600"
-                />
-                <textarea
-                  placeholder="Description"
-                  value={newPlaylist.description}
-                  onChange={(e) =>
-                    setNewPlaylist((p) => ({
-                      ...p,
-                      description: e.target.value,
-                    }))
-                  }
-                  className="w-full px-3 py-2 rounded bg-[#1b2e3f] text-white border border-gray-600"
-                />
+            {/* Content */}
+            <div
+              className="glass rounded-2xl p-8 shadow-card fade-in"
+              style={{ animationDelay: "0.2s" }}
+            >
+              {/* New Playlist Button */}
+              <div className="flex justify-end mb-6">
                 <button
-                  onClick={handleCreateOrUpdatePlaylist}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+                  onClick={() => {
+                    setShowForm((prev) => !prev);
+                    setEditingId(null);
+                    setNewPlaylist({ name: "", description: "" });
+                  }}
+                  className="gradient-button px-6 py-3 rounded-xl text-white text-sm font-bold leading-normal transition-all duration-300 hover-lift"
                 >
-                  {editingId ? "Update Playlist" : "Create Playlist"}
+                  <span className="truncate">
+                    {showForm ? "Cancel" : "New Playlist"}
+                  </span>
                 </button>
               </div>
-            )}
 
-            {playlists.length === 0 ? (
-              <p className="text-white px-4 mt-4">No playlists found.</p>
-            ) : (
-              playlists.map(
-                ({ _id, name, description, owner, videos = [] }) => (
-                  <div key={_id} className="p-4">
-                    <h3 className="text-white text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">
-                      <Link
-                        to={`/playlist/${_id}`}
-                        className="hover:underline text-blue-400"
-                      >
-                        {name}
-                      </Link>
-                    </h3>
-                    <div className="flex items-stretch justify-between gap-4 rounded bg-[#1b2e3f] p-4">
-                      <div className="flex flex-col gap-1 flex-[2_2_0px]">
-                        <p className="text-[#8daece] text-sm font-normal leading-normal">
-                          Playlist · {videos.length} videos
-                        </p>
-                        <p className="text-white text-base font-bold leading-tight">
-                          {description}
-                        </p>
-                        <p className="text-[#8daece] text-sm font-normal leading-normal">
-                          Created by {owner?.username || "Unknown"}
-                        </p>
-                        <div className="flex gap-2 mt-2">
-                          <button
-                            onClick={() => {
-                              setShowForm(true);
-                              setEditingId(_id);
-                              setNewPlaylist({ name, description });
-                            }}
-                            className="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded text-sm"
+              {/* Create/Edit Form */}
+              {showForm && (
+                <div className="glass rounded-xl p-6 mb-6 border border-[#3490f3]/20">
+                  <h3 className="text-white text-lg font-bold mb-4">
+                    {editingId ? "Edit Playlist" : "Create New Playlist"}
+                  </h3>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="text-white text-sm font-medium leading-normal">
+                        Playlist Name
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <svg
+                            className="h-5 w-5 text-[#8daece]"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
                           >
-                            ✏️ Edit
-                          </button>
-                          <button
-                            onClick={() => handleDelete(_id)}
-                            className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm"
-                          >
-                            🗑️ Delete
-                          </button>
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"
+                            />
+                          </svg>
                         </div>
+                        <input
+                          type="text"
+                          placeholder="Enter playlist name"
+                          value={newPlaylist.name}
+                          onChange={(e) =>
+                            setNewPlaylist((p) => ({
+                              ...p,
+                              name: e.target.value,
+                            }))
+                          }
+                          className="form-input w-full pl-10 pr-4 py-3 rounded-xl text-white border-none bg-[#223549]/50 focus:bg-[#223549] placeholder:text-[#90accb] text-base font-normal leading-normal backdrop-blur-sm"
+                        />
                       </div>
                     </div>
+                    <div className="space-y-2">
+                      <label className="text-white text-sm font-medium leading-normal">
+                        Description
+                      </label>
+                      <div className="relative">
+                        <div className="absolute top-3 left-3 flex items-start pointer-events-none">
+                          <svg
+                            className="h-5 w-5 text-[#8daece] mt-1"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                            />
+                          </svg>
+                        </div>
+                        <textarea
+                          placeholder="Enter playlist description"
+                          value={newPlaylist.description}
+                          onChange={(e) =>
+                            setNewPlaylist((p) => ({
+                              ...p,
+                              description: e.target.value,
+                            }))
+                          }
+                          rows="3"
+                          className="form-input w-full pl-10 pr-4 py-3 rounded-xl text-white border-none bg-[#223549]/50 focus:bg-[#223549] placeholder:text-[#90accb] text-base font-normal leading-normal backdrop-blur-sm resize-none"
+                        />
+                      </div>
+                    </div>
+                    <button
+                      onClick={handleCreateOrUpdatePlaylist}
+                      className="gradient-button w-full py-3 px-6 rounded-xl text-white text-base font-bold leading-normal tracking-[0.015em] transition-all duration-300 hover-lift"
+                    >
+                      {editingId ? "Update Playlist" : "Create Playlist"}
+                    </button>
                   </div>
-                )
-              )
-            )}
+                </div>
+              )}
+
+              {/* Playlists List */}
+              {playlists.length === 0 ? (
+                <div className="text-center py-12">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-[#3490f3] to-[#2a7dd4] flex items-center justify-center">
+                    <svg
+                      className="w-8 h-8 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-white text-xl font-semibold mb-2">
+                    No Playlists Yet
+                  </h3>
+                  <p className="text-[#8daece]">
+                    Create your first playlist to organize your favorite videos!
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {playlists.map(
+                    ({ _id, name, description, owner, videos = [] }, index) => (
+                      <div
+                        key={_id}
+                        className="glass rounded-xl p-6 border border-[#3490f3]/20 hover:border-[#3490f3]/40 transition-all duration-300 fade-in"
+                        style={{ animationDelay: `${index * 0.1}s` }}
+                      >
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex-1">
+                            <h3 className="text-white text-lg font-bold leading-tight tracking-[-0.015em] mb-2">
+                              <Link
+                                to={`/playlist/${_id}`}
+                                className="hover:text-[#3490f3] transition-colors duration-200"
+                              >
+                                {name}
+                              </Link>
+                            </h3>
+                            <p className="text-[#8daece] text-sm font-normal leading-normal mb-2">
+                              Playlist · {videos.length} videos
+                            </p>
+                            <p className="text-white text-base font-medium leading-tight mb-2">
+                              {description}
+                            </p>
+                            <p className="text-[#8daece] text-sm font-normal leading-normal">
+                              Created by {owner?.username || "Unknown"}
+                            </p>
+                          </div>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => {
+                                setShowForm(true);
+                                setEditingId(_id);
+                                setNewPlaylist({ name, description });
+                              }}
+                              className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover-lift"
+                            >
+                              ✏️ Edit
+                            </button>
+                            <button
+                              onClick={() => handleDelete(_id)}
+                              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover-lift"
+                            >
+                              🗑️ Delete
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

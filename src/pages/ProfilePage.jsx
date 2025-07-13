@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useUserContext } from "../context/userContext";
-import VideoCard from "../components/VideoCard";
 
 const ProfilePage = () => {
   const { username } = useParams();
   const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
-  const [userVideos, setUserVideos] = useState([]);
   const [subscribed, setSubscribed] = useState(false);
   const [error, setError] = useState("");
   const { details, setisUserLoggedIn } = useUserContext();
@@ -47,19 +45,6 @@ const ProfilePage = () => {
             setSubscribed(subData.data);
           }
         }
-
-        const videosRes = await fetch(
-          `https://fluxplay-backend.onrender.com/api/v1/videos/user/${fetchedProfile._id}/videos`,
-          {
-            method: "GET",
-            credentials: "include",
-          }
-        );
-        const videosData = await videosRes.json();
-        if (!videosRes.ok)
-          throw new Error(videosData.message || "Failed to load videos");
-
-        setUserVideos(videosData.data);
       } catch (err) {
         setError(err.message);
       }
@@ -121,7 +106,7 @@ const ProfilePage = () => {
       {user?.username === username && (
         <button
           onClick={handleLogout}
-          className="absolute top-6 right-8 bg-[#20364b] hover:bg-[#2a4a64] text-white px-4 py-2 rounded transition"
+          className="absolute top-6 right-8 bg-white/10 backdrop-blur-md hover:bg-white/20 text-white px-4 py-2 rounded-xl transition-all duration-300 border border-white/20"
         >
           Logout
         </button>
@@ -129,7 +114,7 @@ const ProfilePage = () => {
 
       <div className="max-w-4xl mx-auto">
         {profile.coverImage && (
-          <div className="h-52 w-full rounded-lg overflow-hidden mb-6">
+          <div className="h-52 w-full rounded-xl overflow-hidden mb-6">
             <img
               src={profile.coverImage}
               alt="Cover"
@@ -142,12 +127,14 @@ const ProfilePage = () => {
           <img
             src={profile.avatar}
             alt="Avatar"
-            className="w-24 h-24 rounded-full object-cover border-4 border-[#20364b]"
+            className="w-24 h-24 rounded-full object-cover border-4 border-white/20 shadow-2xl"
           />
           <div>
-            <h2 className="text-2xl font-semibold">{profile.fullName}</h2>
-            <p className="text-[#8daece]">@{profile.username}</p>
-            <p className="text-sm mt-2">
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              {profile.fullName}
+            </h2>
+            <p className="text-gray-300">@{profile.username}</p>
+            <p className="text-sm mt-2 text-gray-400">
               {profile.subscribersCount} Subscribers •{" "}
               {profile.channelsSubscribedToCount} Subscribed
             </p>
@@ -155,34 +142,14 @@ const ProfilePage = () => {
             {user?._id !== profile._id && (
               <button
                 onClick={handleSubscribe}
-                className={`mt-4 px-4 py-2 rounded text-sm font-medium transition ${
+                className={`mt-4 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
                   subscribed
-                    ? "bg-gray-600 hover:bg-gray-700"
-                    : "bg-blue-600 hover:bg-blue-700"
+                    ? "bg-gray-600/50 hover:bg-gray-700/50 backdrop-blur-md"
+                    : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg"
                 }`}
               >
                 {subscribed ? "Subscribed" : "Subscribe"}
               </button>
-            )}
-          </div>
-        </div>
-
-        <div className="mt-10">
-          <h3 className="text-xl font-semibold mb-4">Uploaded Videos</h3>
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4">
-            {userVideos.length > 0 ? (
-              userVideos.map((video) => (
-                <VideoCard
-                  key={video._id}
-                  videoId={video._id}
-                  title={video.title}
-                  thumbnailUrl={video.thumbnail}
-                  views={video.views}
-                  likes={video.likes}
-                />
-              ))
-            ) : (
-              <p className="text-[#8daece]">No videos uploaded yet.</p>
             )}
           </div>
         </div>
