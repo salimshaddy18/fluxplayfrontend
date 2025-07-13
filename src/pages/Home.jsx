@@ -9,10 +9,13 @@ const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState({ users: [], videos: [] });
   const [showDropdown, setShowDropdown] = useState(false);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { details } = useUserContext();
+
   const fetchAllVideos = async () => {
     try {
+      setLoading(true);
       const res = await fetch(
         "https://fluxplay-backend.onrender.com/api/v1/videos/all",
         {
@@ -24,6 +27,8 @@ const Dashboard = () => {
       setUploads(data.data.videos || []);
     } catch (error) {
       console.error("Failed to fetch videos:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -67,6 +72,21 @@ const Dashboard = () => {
     setShowDropdown(false);
     navigate(`/c/${username}`);
   };
+
+  // Loading screen
+  if (loading) {
+    return (
+      <div className="min-h-screen gradient-bg flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white mx-auto mb-4"></div>
+          <h2 className="text-gradient text-xl font-bold mb-2">
+            Loading FluxPlay
+          </h2>
+          <p className="text-[#8daece] text-sm">Preparing your content...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen gradient-bg">

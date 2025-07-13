@@ -20,11 +20,9 @@ import PlaylistDetails from "./pages/PlaylistDetails";
 
 function App() {
   const context = useUserContext();
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    setLoading(false);
-  }, []);
-  if (loading) {
+
+  // Show loading screen while authentication is being determined
+  if (!context.userFetched) {
     return (
       <div className="gradient-bg flex items-center justify-center h-screen w-full">
         <div className="text-center fade-in">
@@ -58,6 +56,7 @@ function App() {
       </div>
     );
   }
+
   return (
     <div className="gradient-bg min-h-screen">
       <Routes>

@@ -63,11 +63,15 @@ export const UserProvider = (props) => {
     }
   };
 
-  return isUserLoggedIn && !userFetched ? (
-    <p className="text-white">Loading...</p>
-  ) : (
+  return (
     <UserContext.Provider
-      value={{ isUserLoggedIn, setisUserLoggedIn, details, logoutUser }}
+      value={{
+        isUserLoggedIn,
+        setisUserLoggedIn,
+        details,
+        logoutUser,
+        userFetched,
+      }}
     >
       {props.children}
     </UserContext.Provider>
