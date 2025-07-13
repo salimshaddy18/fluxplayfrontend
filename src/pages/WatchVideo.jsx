@@ -101,7 +101,9 @@ const WatchVideo = () => {
 
   useEffect(() => {
     const fetchUserPlaylists = async () => {
-      if (!details?._id) return;
+      if (!details?._id) {
+        return;
+      }
       try {
         const res = await fetch(
           `https://fluxplay-backend.onrender.com/api/v1/playlists/user/${details._id}`,
@@ -408,29 +410,53 @@ const WatchVideo = () => {
       {/* Playlist Modal */}
       {showPlaylistModal && (
         <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex justify-center items-center">
-          <div className="bg-[#1b2e3f] text-white p-6 rounded-lg shadow-lg w-[300px] space-y-3">
-            <h3 className="text-lg font-semibold">Add to Playlist</h3>
-            {userPlaylists.length === 0 ? (
-              <p>No playlists found.</p>
+          <div className="bg-[#1b2e3f] text-white p-6 rounded-lg shadow-lg w-[350px] space-y-4 text-center">
+            {!userPlaylists || userPlaylists.length === 0 ? (
+              <>
+                <h3 className="text-lg font-semibold mb-2">
+                  No Playlists Found
+                </h3>
+                <p className="text-gray-300 mb-4">
+                  You do not have any playlists to add this video.
+                  <br />
+                  Please create a playlist first.
+                </p>
+                <Link
+                  to="/playlist"
+                  onClick={() => setShowPlaylistModal(false)}
+                  className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded text-sm font-medium transition-colors"
+                >
+                  Go to Playlist Page
+                </Link>
+                <button
+                  onClick={() => setShowPlaylistModal(false)}
+                  className="w-full mt-2 bg-gray-600 hover:bg-gray-700 text-white px-3 py-2 rounded text-sm font-medium transition-colors"
+                >
+                  Close
+                </button>
+              </>
             ) : (
-              <ul className="space-y-2 max-h-[200px] overflow-y-auto">
-                {userPlaylists.map((p) => (
-                  <li
-                    key={p._id}
-                    onClick={() => handleAddToPlaylist(p._id)}
-                    className="cursor-pointer hover:text-blue-400"
-                  >
-                    ▶ {p.name}
-                  </li>
-                ))}
-              </ul>
+              <>
+                <h3 className="text-lg font-semibold mb-2">Add to Playlist</h3>
+                <ul className="space-y-2 max-h-[200px] overflow-y-auto">
+                  {userPlaylists.map((p) => (
+                    <li
+                      key={p._id}
+                      onClick={() => handleAddToPlaylist(p._id)}
+                      className="cursor-pointer hover:text-blue-400 p-2 rounded hover:bg-gray-700 transition-colors"
+                    >
+                      ▶ {p.name}
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  onClick={() => setShowPlaylistModal(false)}
+                  className="w-full mt-2 bg-gray-600 hover:bg-gray-700 text-white px-3 py-2 rounded text-sm font-medium transition-colors"
+                >
+                  Close
+                </button>
+              </>
             )}
-            <button
-              onClick={() => setShowPlaylistModal(false)}
-              className="mt-2 bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-sm"
-            >
-              Cancel
-            </button>
           </div>
         </div>
       )}

@@ -9,11 +9,17 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("");
   const [avatarFile, setAvatarFile] = useState(null);
   const [coverFile, setCoverFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
+
+    if (isLoading) return; // Prevent multiple submissions
+
+    setIsLoading(true);
+
     try {
       const url = "https://fluxplay-backend.onrender.com/api/v1/users/register";
 
@@ -41,6 +47,8 @@ const RegisterPage = () => {
       }
     } catch (error) {
       console.log("Error during registration:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -302,9 +310,21 @@ const RegisterPage = () => {
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  className="gradient-button w-full py-3 px-6 rounded-xl text-white text-base font-bold leading-normal tracking-[0.015em] transition-all duration-300 hover-lift"
+                  disabled={isLoading}
+                  className={`w-full py-3 px-6 rounded-xl text-white text-base font-bold leading-normal tracking-[0.015em] transition-all duration-300 ${
+                    isLoading
+                      ? "bg-gray-500 cursor-not-allowed opacity-70"
+                      : "gradient-button hover-lift"
+                  }`}
                 >
-                  <span className="truncate">Create Account</span>
+                  {isLoading ? (
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      <span>Creating Account...</span>
+                    </div>
+                  ) : (
+                    <span className="truncate">Create Account</span>
+                  )}
                 </button>
 
                 {/* Link to Login */}
