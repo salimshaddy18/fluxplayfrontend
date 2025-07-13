@@ -137,7 +137,7 @@ Experience FluxPlay in action with our live demo: [fluxplayfrontend-5f27.vercel.
 The application connects to a backend API hosted on Render:
 
 - **Base URL**: `https://fluxplay-backend.onrender.com/api/v1`
-- **Backend github link: `https://github.com/salimshaddy18/FluxPlay-backend`
+- **Backend github link:** `https://github.com/salimshaddy18/FluxPlay-backend`
 - **Authentication**: Cookie-based sessions
 - **CORS**: Configured for cross-origin requests
 
